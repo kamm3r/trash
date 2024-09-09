@@ -402,10 +402,124 @@ WHERE airport.name LIKE '%Hels%';
 ```
 ![sql kommennon vastaus](kuva.png)
 
+### 4.5
+```sql
+SELECT name, screen_name FROM goal
+LEFT JOIN goal_reached ON goal.id = goal_id LEFT JOIN game ON game.id = game_id;
+```
+![sql kommennon vastaus](kuva.png)
 
 ## 5 Sisäkysely harjoitukset
 
+### 5.1
+```sql
+SELECT name FROM country WHERE iso_country IN(
+SELECT iso_country FROM airport WHERE name LIKE "Satsuma%");
+```
+![sql kommennon vastaus](kuva.png)
+
+### 5.2
+```sql
+SELECT name FROM airport WHERE iso_country
+IN(SELECT iso_country FROM country WHERE name = "Monaco");
+```
+![sql kommennon vastaus](kuva.png)
+
+### 5.3
+```sql
+SELECT screen_name FROM game WHERE id IN(
+SELECT game_id FROM goal_reached
+WHERE goal_id IN(SELECT id FROM goal WHERE name = "CLOUDS"));
+```
+![sql kommennon vastaus](kuva.png)
+
+### 5.4
+```sql
+SELECT country.name FROM country
+WHERE iso_country NOT IN(SELECT airport.iso_country FROM airport);
+```
+![sql kommennon vastaus](kuva.png)
+
+### 5.5
+```sql
+SELECT name FROM goal WHERE id
+NOT IN(SELECT goal.id FROM goal, goal_reached, game
+WHERE game.id = game_id AND goal.id = goal_id AND screen_name = "Heini");
+```
+![sql kommennon vastaus](kuva.png)
+
 ## 6 Koostetieto kyselyt harjoitukset
+
+### 6.1
+```sql
+SELECT elevation_ft as "max elevation_ft" FROM airport
+WHERE elevation_ft IN(SELECT MAX(elevation_ft) FROM airport);
+```
+![sql kommennon vastaus](kuva.png)
+
+### 6.2
+```sql
+SELECT continent, COUNT(*) FROM country GROUP BY continent;
+```
+![sql kommennon vastaus](kuva.png)
+
+### 6.3
+```sql
+SELECT screen_name, COUNT(*) FROM game, goal_reached
+WHERE id = game_id GROUP BY screen_name;
+```
+![sql kommennon vastaus](kuva.png)
+
+### 6.4
+```sql
+SELECT screen_name FROM game
+WHERE co2_consumed IN(SELECT MIN(co2_consumed) FROM game);
+```
+![sql kommennon vastaus](kuva.png)
+
+### 6.5
+```sql
+SELECT country.name, COUNT(*) FROM airport, country
+WHERE airport.iso_country = country.iso_country
+GROUP BY country.iso_country ORDER BY COUNT(*) desc LIMIT 50;
+```
+![sql kommennon vastaus](kuva.png)
+
+### 6.6
+```sql
+SELECT country.name FROM airport, country
+WHERE airport.iso_country = country.iso_country
+GROUP BY country.iso_country HAVING COUNT(*) > 1000;
+```
+![sql kommennon vastaus](kuva.png)
+
+### 6.7
+```sql
+SELECT name FROM airport
+WHERE elevation_ft = (SELECT MAX(elevation_ft) FROM airport);
+```
+![sql kommennon vastaus](kuva.png)
+
+### 6.8
+```sql
+SELECT name FROM country WHERE iso_country IN(
+SELECT iso_country FROM airport WHERE elevation_ft
+IN(SELECT MAX(elevation_ft) FROM airport));
+```
+![sql kommennon vastaus](kuva.png)
+
+### 6.9
+```sql
+SELECT COUNT(*) FROM game, goal_reached
+WHERE id = game_id AND screen_name = "Vesa" GROUP BY screen_name;
+```
+![sql kommennon vastaus](kuva.png)
+
+### 6.10
+```sql
+SELECT name FROM airport ORDER BY ABS(latitude_deg) DESC LIMIT 1;
+```
+![sql kommennon vastaus](kuva.png)
 
 ## 7 Päivityskyselyt harjoitukset
 
