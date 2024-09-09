@@ -294,11 +294,114 @@ SELECT DISTINCT co2_budget FROM game;
 
 ### 3.1
 ```sql
-SELECT * FROM airport WHERE country = 'Finland' AND city = 'Helsinki';
+SELECT country.name AS "country name", airport.name AS "airport name"
+FROM airport, country
+WHERE airport.iso_country = country.iso_country AND country.name = "Iceland";
+```
+![sql kommennon vastaus](kuva.png)
+
+### 3.2
+```sql
+SELECT airport.name AS "airport name" FROM airport, country
+WHERE airport.iso_country = country.iso_country
+AND country.name = "France" AND airport.type = "large_airport";
+```
+![sql kommennon vastaus](kuva.png)
+
+### 3.3
+```sql
+SELECT country.name AS country_name, airport.name AS airport_name
+FROM airport, country
+WHERE airport.iso_country = country.iso_country AND country.continent = "AN";
+```
+![sql kommennon vastaus](kuva.png)
+
+### 3.4
+```sql
+SELECT elevation_ft FROM airport, game
+WHERE location = ident AND screen_name = "Heini";
+```
+![sql kommennon vastaus](kuva.png)
+
+### 3.5
+```sql
+SELECT elevation_ft * 0.3048 AS elevation_m FROM airport, game
+WHERE location = ident AND screen_name = "Heini";
+```
+![sql kommennon vastaus](kuva.png)
+
+### 3.6
+```sql
+SELECT name FROM airport, game
+WHERE location = ident AND screen_name = "Ilkka";
+```
+![sql kommennon vastaus](kuva.png)
+
+### 3.7
+```sql
+SELECT country.name FROM airport, game, country
+WHERE location = ident
+AND airport.iso_country = country.iso_country AND screen_name = "Ilkka";
+```
+![sql kommennon vastaus](kuva.png)
+
+### 3.8
+```sql
+SELECT name FROM goal, goal_reached, game
+WHERE game.id = game_id AND goal.id = goal_id AND screen_name = "Heini";
+```
+![sql kommennon vastaus](kuva.png)
+
+### 3.9
+```sql
+SELECT airport.name FROM airport, game, goal, goal_reached
+WHERE ident = location AND game.id = game_id
+AND goal.id = goal_id AND screen_name = "Ilkka" AND goal.name = "CLOUDS";
+```
+![sql kommennon vastaus](kuva.png)
+
+### 3.10
+```sql
+SELECT country.name FROM country, airport, game, goal, goal_reached
+WHERE airport.iso_country = country.iso_country AND ident = location
+AND game.id = game_id AND goal.id = goal_id
+AND screen_name = "Ilkka" AND goal.name = "CLOUDS";
 ```
 ![sql kommennon vastaus](kuva.png)
 
 ## 4 Join harjoitukset
+
+### 4.1
+```sql
+SELECT country.name AS "country name", airport.name AS "airport name"
+FROM country INNER JOIN airport ON airport.iso_country = country.iso_country
+WHERE country.name = "Finland" AND scheduled_service = "yes";
+```
+![sql kommennon vastaus](kuva.png)
+
+### 4.2
+```sql
+SELECT screen_name, airport.name FROM game
+INNER JOIN airport ON location = ident;
+```
+![sql kommennon vastaus](kuva.png)
+
+### 4.3
+```sql
+SELECT screen_name, country.name FROM game
+INNER JOIN airport ON location = ident
+INNER JOIN country ON airport.iso_country = country.iso_country;
+```
+![sql kommennon vastaus](kuva.png)
+
+### 4.4
+```sql
+SELECT airport.name, game.screen_name FROM airport
+LEFT JOIN game ON airport.ident = game.location
+WHERE airport.name LIKE '%Hels%';
+```
+![sql kommennon vastaus](kuva.png)
+
 
 ## 5 Sisäkysely harjoitukset
 
